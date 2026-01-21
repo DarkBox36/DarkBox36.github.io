@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DarkBox - Indie Game Development Studio</title>
+    <meta name="description" content="DarkBox is a passionate collective of programmers crafting immersive gaming experiences with creativity and precision.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background: #0a0a0a;
+            color: #e5e5e5;
+        }
+        
+        /* Added Matrix falling letters background effect */
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.20;
+            pointer-events: none;
+        }
+        
+        main {
+            position: relative;
+            z-index: 1;
+        }
+        /* </CHANGE> */
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #ffffff 0%, #a0a0a0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .game-card {
+            background: #141414;
+            border: 1px solid #262626;
+            transition: all 0.3s ease;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-8px);
+            border-color: #404040;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+        
+        .game-banner {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .game-banner::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.05) 0%, transparent 100%);
+        }
+        
+        header {
+            backdrop-filter: blur(10px);
+            background: rgba(10, 10, 10, 0.8);
+            border-bottom: 1px solid #1a1a1a;
+        }
+        
+        .section-title {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: white;
+        }
+        
+        .hero-section {
+            background: radial-gradient(ellipse at top, #1a1a1a 0%, #0a0a0a 50%);
+        }
+        
+        @media (max-width: 768px) {
+            .game-banner {
+                height: 160px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Added Matrix canvas background -->
+    <canvas id="matrix-canvas"></canvas>
+    <!-- </CHANGE> -->
+
+    <main>
+    <!-- Header -->
+    <header class="fixed w-full top-0 z-50">
+        <nav class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <!-- Replaced CSS box with Bootstrap SVG icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-box" viewBox="0 0 16 16">
+                        <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464z"/>
+                    </svg>
+                    <span class="text-xl font-semibold">DarkBox</span>
+                </div>
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#about" class="text-sm text-gray-400 hover:text-white transition">About</a>
+                    <a href="#games" class="text-sm text-gray-400 hover:text-white transition">Games</a>
+                    <a href="#contact" class="text-sm text-gray-400 hover:text-white transition">Contact</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section pt-32 pb-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex items-center gap-4 mb-6">
+                <!-- Replaced CSS box with Bootstrap SVG icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-box" viewBox="0 0 16 16">
+                    <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464z"/>
+                </svg>
+                <h1 class="text-5xl md:text-7xl font-bold">DarkBox</h1>
+            </div>
+            <p class="text-xl md:text-2xl text-gray-400 max-w-3xl leading-relaxed">
+                Crafting immersive digital worlds where imagination meets innovation
+            </p>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl md:text-5xl font-bold mb-8 section-title">About Us</h2>
+            <div class="mt-12 grid md:grid-cols-2 gap-12">
+                <div>
+                    <p class="text-lg text-gray-300 leading-relaxed mb-6">
+                        DarkBox is a passionate collective of programmers and creators united by a singular vision: to craft gaming experiences that resonate deeply with players. We are a small, agile studio where every line of code is written with intention, and every pixel is placed with purpose.
+                    </p>
+                    <p class="text-lg text-gray-300 leading-relaxed">
+                        Born from late-night coding sessions and fueled by an obsession with interactive storytelling, we blend technical precision with creative ambition. Our games aren't just built—they're carefully architected to deliver moments of wonder, challenge, and discovery.
+                    </p>
+                </div>
+                <div>
+                    <p class="text-lg text-gray-300 leading-relaxed mb-6">
+                        We believe in the power of indie development: the freedom to experiment, the courage to take risks, and the intimacy of a team where everyone's voice matters. Each project we undertake is a labor of love, designed to push boundaries and explore uncharted territories in game design.
+                    </p>
+                    <p class="text-lg text-gray-300 leading-relaxed">
+                        From concept to completion, we obsess over the details that make games memorable. Welcome to DarkBox—where code becomes art, and players become explorers.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Games Section -->
+    <section id="games" class="py-20 px-6 bg-black/30">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl md:text-5xl font-bold mb-4 section-title">Our Games</h2>
+            <p class="text-gray-400 mb-16 text-lg">Experiences crafted with passion and precision</p>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Game Card 1 -->
+                <div class="game-card rounded-lg overflow-hidden">
+                    <div class="game-banner flex items-center justify-center">
+                        <div class="text-6xl"></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold mb-3">Puzzle House</h3>
+                        <p class="text-gray-400 leading-relaxed">
+                            A puzzle game composed of 10 levels designed to challenge your logic, observation, and problem-solving skills.
+                        </p>
+                        <div class="mt-4 flex gap-2">
+                            <span class="text-xs px-3 py-1 bg-white/10 rounded-full">Puzzle</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Game Card 2 -->
+                <div class="game-card rounded-lg overflow-hidden">
+                    <div class="game-banner flex items-center justify-center">
+                        <div class="text-6xl"></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold mb-3">TOSG</h3>
+                        <p class="text-gray-400 leading-relaxed">
+                            A programmable narrative game where players learn by writing real code and shaping their own stories.
+                        </p>
+                        <div class="mt-4 flex gap-2">
+                            <span class="text-xs px-3 py-1 bg-white/10 rounded-full">Story</span>
+                            <span class="text-xs px-3 py-1 bg-white/10 rounded-full">Open-Source</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Game Card 3
+                <div class="game-card rounded-lg overflow-hidden">
+                    <div class="game-banner flex items-center justify-center">
+                        <div class="text-6xl">🔮</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold mb-3">Chrono Fragments</h3>
+                        <p class="text-gray-400 leading-relaxed">
+                            Manipulate time itself in this mind-bending puzzle platformer. Rewind, pause, and fast-forward through intricate levels that challenge your perception of reality.
+                        </p>
+                        <div class="mt-4 flex gap-2">
+                            <span class="text-xs px-3 py-1 bg-white/10 rounded-full">Puzzle</span>
+                            <span class="text-xs px-3 py-1 bg-white/10 rounded-full">Platformer</span>
+                        </div>
+                    </div>
+                </div>-->
+
+                <!-- Game Card 4
+                <div class="game-card rounded-lg overflow-hidden">
+                    <div class="game-banner flex items-center justify-center">
+                        <div class="text-6xl">🏙️</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold mb-3">Neon Descent</h3>
+                        <p class="text-gray-400 leading-relaxed">
+                            A cyberpunk roguelike where every run takes you deeper into a procedurally generated megacity. Hack, fight, and survive in a world of corporate espionage.
+                        </p>
+                        <div class="mt-4 flex gap-2">
+                            <span class="text-xs px-3 py-1 bg-white/10 rounded-full">Roguelike</span>
+                            <span class="text-xs px-3 py-1 bg-white/10 rounded-full">Cyberpunk</span>
+                        </div>
+                    </div>
+                </div>-->
+
+                <!-- Game Card 5
+                <div class="game-card rounded-lg overflow-hidden">
+                    <div class="game-banner flex items-center justify-center">
+                        <div class="text-6xl">🌲</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold mb-3">Whisperwood</h3>
+                        <p class="text-gray-400 leading-relaxed">
+                            An atmospheric survival game set in an enchanted forest. Gather resources, craft tools, and uncover ancient secrets hidden beneath the canopy.
+                        </p>
+                        <div class="mt-4 flex gap-2">
+                            <span class="text-xs px-3 py-1 bg-white/10 rounded-full">Survival</span>
+                            <span class="text-xs px-3 py-1 bg-white/10 rounded-full">Exploration</span>
+                        </div>
+                    </div>
+                </div>-->
+
+                <!-- Game Card 6 
+                <div class="game-card rounded-lg overflow-hidden">
+                    <div class="game-banner flex items-center justify-center">
+                        <div class="text-6xl">🎭</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold mb-3">Masquerade Protocol</h3>
+                        <p class="text-gray-400 leading-relaxed">
+                            A social deduction game where identity is currency. Infiltrate high-society events, assume disguises, and complete covert objectives without blowing your cover.
+                        </p>
+                        <div class="mt-4 flex gap-2">
+                            <span class="text-xs px-3 py-1 bg-white/10 rounded-full">Strategy</span>
+                            <span class="text-xs px-3 py-1 bg-white/10 rounded-full">Multiplayer</span>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 px-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">Let's Connect</h2>
+            <p class="text-xl text-gray-400 mb-12 leading-relaxed">
+                Have a question, feedback, or just want to chat about games? We'd love to hear from you.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#games" class="px-8 py-4 border border-white/20 rounded-lg hover:border-white/40 transition">
+                    View Our Work
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 py-12 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-3">
+                    <!-- Replaced CSS box with Bootstrap SVG icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-box" viewBox="0 0 16 16">
+                        <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464z"/>
+                    </svg>
+                    <span class="font-semibold">DarkBox</span>
+                </div>
+                <div class="text-center">
+                    <p class="text-gray-500 text-sm">
+                        © 2026 DarkBox Studio. Crafted with passion.
+                    </p>
+                    <!-- Added temporary domain notice -->
+                    <p class="text-gray-600 text-xs mt-1">
+                        DarkBox36.github.io is our temporary home while we secure an official domain
+                    </p>
+                    <!-- </CHANGE> -->
+                </div>
+                <div class="flex gap-6">
+                    <a href="#" class="text-gray-400 hover:text-white transition text-sm">Twitter</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition text-sm">Discord</a>
+                    <a href="https://github.com/DarkBox36" class="text-gray-400 hover:text-white transition text-sm">GitHub</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    </main>
+
+    <script>
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const matrix = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&*()_+-=[]{}|;:,.<>?/';
+        const matrixChars = matrix.split('');
+
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+
+        for (let i = 0; i < columns; i++) {
+            drops[i] = Math.floor(Math.random() * canvas.height / fontSize);
+        }
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(10, 10, 10, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 50);
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+        // </CHANGE>
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
