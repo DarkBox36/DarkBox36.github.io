@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Void Echo - DarkBox</title>
+    <meta name="description" content="Puzzle House - A collection of atmospheric puzzle games developed by DeepDish36. Explore, solve, and immerse yourself in unique challenges.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background: #0a0a0a;
+            color: #e5e5e5;
+        }
+        
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.04;
+            pointer-events: none;
+        }
+        
+        main {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #ffffff 0%, #a0a0a0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        header {
+            backdrop-filter: blur(10px);
+            background: rgba(10, 10, 10, 0.8);
+            border-bottom: 1px solid #1a1a1a;
+        }
+        
+        .hero-banner {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            height: 400px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-banner::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 200px;
+            background: linear-gradient(to top, #0a0a0a 0%, transparent 100%);
+        }
+        
+        .screenshot-card {
+            background: #141414;
+            border: 1px solid #262626;
+            transition: all 0.3s ease;
+        }
+        
+        .screenshot-card:hover {
+            border-color: #404040;
+            transform: scale(1.02);
+        }
+        
+        .info-card {
+            background: #141414;
+            border: 1px solid #262626;
+        }
+        
+        .feature-item {
+            background: #141414;
+            border: 1px solid #262626;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-item:hover {
+            border-color: #404040;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-banner {
+                height: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="matrix-canvas"></canvas>
+
+    <main>
+    <!-- Header -->
+    <header class="fixed w-full top-0 z-50">
+        <nav class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <a href="../index.html" class="flex items-center gap-3 hover:opacity-80 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-box" viewBox="0 0 16 16">
+                        <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464z"/>
+                    </svg>
+                    <span class="text-xl font-semibold">DarkBox</span>
+                </a>
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="../index.html#about" class="text-sm text-gray-400 hover:text-white transition">About</a>
+                    <a href="../index.html#games" class="text-sm text-gray-400 hover:text-white transition">Games</a>
+                    <a href="../index.html#contact" class="text-sm text-gray-400 hover:text-white transition">Contact</a>
+                </div>
+                <a href="../index.html#games" class="md:hidden text-sm text-gray-400 hover:text-white transition flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+                    </svg>
+                    Back
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="hero-banner flex items-center justify-center pt-16">
+
+    </section>
+
+    <!-- Game Info -->
+    <section class="px-6 -mt-20 relative z-10">
+        <div class="max-w-5xl mx-auto">
+            <!-- Title and Meta -->
+            <div class="mb-8">
+                <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="text-xs px-3 py-1 bg-white/10 rounded-full">Puzzle</span>
+                </div>
+                <h1 class="text-4xl md:text-6xl font-bold mb-4">Puzzle House</h1>
+                <p class="text-gray-400 text-lg">by <span class="text-white">DeepDish36</span></p>
+            </div>
+
+            <!-- Main Content Grid -->
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Left Column - Description & Features -->
+                <div class="lg:col-span-2 space-y-8">
+                    <!-- Description -->
+                    <div>
+                        <h2 class="text-2xl font-semibold mb-4">About the Game</h2>
+                        <div class="space-y-4 text-gray-300 leading-relaxed">
+                            <p>
+                                A minimalist puzzle experience set inside a strange, silent house. Each room presents a unique challenge that tests your logic, perception, and curiosity.
+                            </p>
+                            <p>
+                                You stumble upon an unfamiliar home with no instructions and no clear purpose. The only way forward is through the puzzles—ten rooms, ten different rules, and no hand‑holding.
+                            </p>
+                            <p>
+                                Every level teaches you something new. Some rely on sound, others on light, memory, or observation. Nothing is random. Everything has a solution.
+                            </p>
+
+                        </div>
+                    </div>
+
+                    <!-- Features -->
+                    <div>
+                        <h2 class="text-2xl font-semibold mb-4">Features</h2>
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div class="feature-item p-4 rounded-lg">
+                                <h3 class="font-semibold mb-1">Atmospheric Exploration</h3>
+                                <p class="text-sm text-gray-400"> Navigate through a mysterious house where each room has its own mood, lighting, and hidden logic. </p>
+                            </div>
+                            <div class="feature-item p-4 rounded-lg">
+                                <h3 class="font-semibold mb-1">Environmental Mystery</h3>
+                                <p class="text-sm text-gray-400"> Discover the house's secrets through subtle environmental clues and the behavior of each puzzle.</p>
+                            </div>
+                            <div class="feature-item p-4 rounded-lg">
+                                <h3 class="font-semibold mb-1">Puzzle Variety</h3>
+                                <p class="text-sm text-gray-400"> Solve ten unique puzzles ranging from sound-based challenges to logic, memory, and perception tests. </p>
+                            </div>
+                            <div class="feature-item p-4 rounded-lg">
+                                <h3 class="font-semibold mb-1">Progressive Challenge</h3>
+                                <p class="text-sm text-gray-400"> Every level introduces a new mechanic, keeping the experience fresh, surprising, and progressively more challenging. </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Screenshots -->
+                    <div>
+                        <h2 class="text-2xl font-semibold mb-4">Screenshots</h2>
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div class="screenshot-card rounded-lg overflow-hidden aspect-video bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                                <span class="text-gray-500 text-sm">Screenshot 1</span>
+                            </div>
+                            <div class="screenshot-card rounded-lg overflow-hidden aspect-video bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                                <span class="text-gray-500 text-sm">Screenshot 2</span>
+                            </div>
+                            <div class="screenshot-card rounded-lg overflow-hidden aspect-video bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                                <span class="text-gray-500 text-sm">Screenshot 3</span>
+                            </div>
+                            <div class="screenshot-card rounded-lg overflow-hidden aspect-video bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                                <span class="text-gray-500 text-sm">Screenshot 4</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column - Info Cards -->
+                <div class="space-y-6">
+                    <!-- Download/Play Card -->
+                    <div class="info-card rounded-lg p-6">
+                        <h3 class="font-semibold mb-4">Get the Game</h3>
+                        <a href="https://github.com/DarkBox36/PuzzleHouse/releases/tag/Game" class="block w-full py-3 bg-white text-black font-semibold rounded-lg text-center hover:bg-gray-200 transition mb-3">
+                            Download Now
+                        </a>
+                    </div>
+
+                    <!-- Game Info Card -->
+                    <div class="info-card rounded-lg p-6">
+                        <h3 class="font-semibold mb-4">Game Info</h3>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Status</span>
+                                <span class="text-green-400">Released</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Platform</span>
+                                <span>Computer</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Release Date</span>
+                                <span>2026</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Engine</span>
+                                <span>Raylib</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Genre</span>
+                                <span>Puzzle</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Credits Card -->
+                    <div class="info-card rounded-lg p-6">
+                        <h3 class="font-semibold mb-4">Credits</h3>
+                        <div class="space-y-3 text-sm">
+                            <div>
+                                <span class="text-gray-400 block">Developer</span>
+                                <span>DeepDish36</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-400 block">Programming</span>
+                                <span>DeepDish36</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-400 block">Art & Design</span>
+                                <span>DeepDish36</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-400 block">Sound & Music</span>
+                                <span>DeepDish36</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Links Card -->
+                    <div class="info-card rounded-lg p-6">
+                        <h3 class="font-semibold mb-4">Links</h3>
+                        <div class="space-y-2">
+                            No links avaliable
+                            <!--<a href="#" class="flex items-center gap-3 text-gray-400 hover:text-white transition text-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+                                </svg>
+                                Source Code
+                            </a>
+                            <a href="#" class="flex items-center gap-3 text-gray-400 hover:text-white transition text-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M13.545 2.907a13.227 13.227 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.19 12.19 0 0 0-3.658 0 8.258 8.258 0 0 0-.412-.833.051.051 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.041.041 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032c.001.014.01.028.021.037a13.276 13.276 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019c.308-.42.582-.863.818-1.329a.05.05 0 0 0-.01-.059.051.051 0 0 0-.018-.011 8.875 8.875 0 0 1-1.248-.595.05.05 0 0 1-.02-.066.051.051 0 0 1 .015-.019c.084-.063.168-.129.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.052.052 0 0 1 .053.007c.08.066.164.132.248.195a.051.051 0 0 1-.004.085 8.254 8.254 0 0 1-1.249.594.05.05 0 0 0-.03.03.052.052 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.235 13.235 0 0 0 4.001-2.02.049.049 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.034.034 0 0 0-.02-.019Zm-8.198 7.307c-.789 0-1.438-.724-1.438-1.612 0-.889.637-1.613 1.438-1.613.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612Zm5.316 0c-.788 0-1.438-.724-1.438-1.612 0-.889.637-1.613 1.438-1.613.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612Z"/>
+                                </svg>
+                                Discord
+                            </a>
+                            <a href="#" class="flex items-center gap-3 text-gray-400 hover:text-white transition text-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"/>
+                                </svg>
+                                Twitter
+                            </a>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Back to Games -->
+    <section class="py-16 px-6">
+        <div class="max-w-5xl mx-auto text-center">
+            <a href="../index.html#games" class="inline-flex items-center gap-2 text-gray-400 hover:text-white transition">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+                </svg>
+                Back to All Games
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 py-12 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <a href="../index.html" class="flex items-center gap-3 hover:opacity-80 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-box" viewBox="0 0 16 16">
+                        <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464z"/>
+                    </svg>
+                    <span class="font-semibold">DarkBox</span>
+                </a>
+                <div class="text-center">
+                    <p class="text-gray-500 text-sm">
+                        © 2026 DarkBox Studio. Crafted with passion.
+                    </p>
+                    <p class="text-gray-600 text-xs mt-1">
+                        DarkBox36.github.io is our temporary home while we secure an official domain
+                    </p>
+                </div>
+                <div class="flex gap-6">
+                    <a href="https://Github.com/DarkBox36" class="text-gray-400 hover:text-white transition text-sm">GitHub</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    </main>
+
+    <script>
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const matrix = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&*()_+-=[]{}|;:,.<>?/';
+        const matrixChars = matrix.split('');
+
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+
+        for (let i = 0; i < columns; i++) {
+            drops[i] = Math.floor(Math.random() * canvas.height / fontSize);
+        }
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(10, 10, 10, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 50);
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
